@@ -1,5 +1,26 @@
 # hubitat-datacollector
   Small NodeJS project to listen for Hubitat Maker API POST events and capture them to a PostgreSQL database.
+
+# Try it Now with Docker
+If you don't care about local development and just want to run it, see the example below.
+## Pre-requisites:
+
+1. Docker Installed
+2. PostgreSQL Installed somewhere (physical host, VM, Docker, whatever) with a new DB created (i.e. `hubitat`)
+3. `events` table created in PostgreSQL DB.  Create statement for your convenience:
+```sql
+CREATE TABLE IF NOT EXISTS events (name varchar( 255 ) NOT NULL, value varchar( 255 ) NOT NULL, displayName varchar( 255 ) NOT NULL, deviceId varchar ( 255 ) NOT NULL, descriptionText varchar( 255 ), unit varchar( 255 ), type varchar( 255 ), data varchar( 255 ));
+```
+## Example:
+```
+docker run --rm -ti \
+  -e PGHOST=yourpostgreshost -e PGUSER=postgres -e PGPASSWORD=YourPassword \
+  -e PGDATABASE=hubitat -e PGPORT=5432 -p 3000:3000 entmike/hubitat-datacollector
+```
+3. In Hubitat, add a Maker API App (if you haven't already.)
+4. In your Maker API App settings, set the 'URL to send device events to by POST' property to the URL of your Docker Container (i.e. `http://mydockerhost:3000` or `http://192.168.1.123:3000`, etc.)
+5. Trigger or wait for an event from one of your devices enabled in your Maker API to fire.
+6. In `psql` or whatever PostgreSQL client you use, connect to the database and look at the `events` table for updates.
 # Local Development
 
 ## Set Up a Local Postgres DB Container
@@ -53,6 +74,20 @@
   ```
 
 ## Run Local
+
+## Building your own Docker Image:
+
+```bash
+docker build --build-arg CACHE_DATE="$(date)" -t your/dockertag .
+```
+
+## Running your Docker Image as Container:
+
+```bash
+docker run --rm -ti \
+  -e PGHOST=yourpostgreshost -e PGUSER=postgres -e PGPASSWORD=YourPassword \
+  -e PGDATABASE=hubitat -e PGPORT=5432 -p 3000:3000 your/dockertag
+```
 
 ```bash
 npm run debug
