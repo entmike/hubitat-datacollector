@@ -26,10 +26,12 @@ app.post('*', (req, res) => {
       console.error(err)
       return
     }
-    console.log('Insert successful.')
+    console.log(`Insert successful:\n${query}`)
     res.json(req.body.content)
     // client.end();
   })
 })
 
-app.listen(3000, () => console.log('Gator app listening on port 3000!'))
+app.listen(3000, () =>
+  console.log('Hubitat Data Collector app listening on port 3000!')
+)
