@@ -14,8 +14,12 @@ If you don't care about local development and just want to run it, see the examp
 2. PostgreSQL Installed somewhere (physical host, VM, Docker, whatever) with a new DB created (i.e. `hubitat`)
 3. `events` table created in PostgreSQL DB.  Create statement for your convenience:
 ```sql
-CREATE TABLE IF NOT EXISTS events (name varchar( 255 ) NOT NULL, value varchar( 255 ) NOT NULL, displayName varchar( 255 ) NOT NULL, deviceId varchar ( 255 ) NOT NULL, descriptionText varchar( 255 ), unit varchar( 255 ), type varchar( 255 ), data varchar( 255 ));
+CREATE TABLE IF NOT EXISTS events (
+name varchar( 255 ) NOT NULL, value varchar( 255 ) NOT NULL, displayName varchar( 255 ) NOT NULL,
+deviceId varchar ( 255 ) NOT NULL, descriptionText varchar( 255 ), unit varchar( 255 ), type varchar( 255 ), 
+data varchar( 255 ), timestamp TIMESTAMP DEFAULT NOW());
 ```
+
 ## Example:
 ```
 docker run --rm -ti \
@@ -51,7 +55,7 @@ Read this section if you are a developer wanting to tinker with the code in this
    ```
    3. Create `events` Table
    ```bash
-   docker exec --user postgres hubitat-postgres psql hubitat -c "CREATE TABLE IF NOT EXISTS events (name varchar( 255 ) NOT NULL, value varchar( 255 ) NOT NULL, displayName varchar( 255 ) NOT NULL, deviceId varchar ( 255 ) NOT NULL, descriptionText varchar( 255 ), unit varchar( 255 ), type varchar( 255 ), data varchar( 255 ));"
+   docker exec --user postgres hubitat-postgres psql hubitat -c "CREATE TABLE IF NOT EXISTS events (name varchar( 255 ) NOT NULL, value varchar( 255 ) NOT NULL, displayName varchar( 255 ) NOT NULL, deviceId varchar ( 255 ) NOT NULL, descriptionText varchar( 255 ), unit varchar( 255 ), type varchar( 255 ), data varchar( 255 ), timestamp TIMESTAMP DEFAULT NOW());"
    ```
 
 ## Initial Setup
