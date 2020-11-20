@@ -16,24 +16,28 @@ app.post('*', (req, res) => {
     console.log(req.path)
     console.log(req.body.content)
     const c = req.body.content
-    if (c === undefined)
+    if (c === undefined) {
+      // Remind user to RTFM
       res.end(
         'No content found in request body.  Read the docs.  https://github.com/entmike/hubitat-datacollector'
       )
-    const query = `
-          INSERT INTO events (name, value, displayName, deviceId, descriptionText, unit, type, data)
-          VALUES ('${c.name}','${c.value}','${c.displayName}','${c.deviceId}',
-          '${c.descriptionText}','${c.unit}','${c.type}','${c.data}')`
-
-    client.query(query, (err, results) => {
-      if (err) {
-        console.error(err)
-        res.json(err)
-      } else {
-        console.log(`Insert successful:\n${query}`)
-        res.json(req.body.content)
-      }
-    })
+    } else {
+      // Create INSERT statement
+      const query = `
+        INSERT INTO events (name, value, displayName, deviceId, descriptionText, unit, type, data)
+        VALUES ('${c.name}','${c.value}','${c.displayName}','${c.deviceId}',
+        '${c.descriptionText}','${c.unit}','${c.type}','${c.data}')`
+      // Execute INSERT command
+      client.query(query, (err, results) => {
+        if (err) {
+          console.error(err)
+          res.json(err)
+        } else {
+          console.log(`Insert successful:\n${query}`)
+          res.json(req.body.content)
+        }
+      })
+    }
   } catch (e) {
     res.json(e)
   }
