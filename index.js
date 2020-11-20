@@ -28,13 +28,14 @@ app.post('*', (req, res) => {
     client.query(query, (err, results) => {
       if (err) {
         console.error(err)
-        res.end(err.message)
+        res.json(err)
+      } else {
+        console.log(`Insert successful:\n${query}`)
+        res.json(req.body.content)
       }
-      console.log(`Insert successful:\n${query}`)
-      res.json(req.body.content)
     })
   } catch (e) {
-    res.end(e.message)
+    res.json(e)
   }
 })
 
