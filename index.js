@@ -20,6 +20,9 @@ app.post('*', (req, res) => {
       res.end(
         'No content found in request body.  Read the docs.  https://github.com/entmike/hubitat-datacollector'
       )
+      console.error(
+        'No content found in request body.  Read the docs.  https://github.com/entmike/hubitat-datacollector'
+      )
       client.end()
     } else {
       // Create INSERT statement
@@ -30,17 +33,21 @@ app.post('*', (req, res) => {
       // Execute INSERT command
       client.query(query, (err, results) => {
         if (err) {
+          console.error(`An error happened when trying to run:\n${query}`)
           console.error(err)
           res.json(err)
           client.end()
         } else {
           console.log(`Insert successful:\n${query}`)
+          // console.log(results)
           res.json(req.body.content)
           client.end()
         }
       })
     }
   } catch (e) {
+    console.error(`An unforeseen error ocurred.`)
+    console.error(e)
     res.json(e)
   }
 })
