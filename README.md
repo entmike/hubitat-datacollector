@@ -46,7 +46,7 @@ Read this section if you are a developer wanting to tinker with the code in this
   ```bash
   docker run -d --name=hubitat-postgres \
     -v /mnt/user/appdata/hubitat-postgres:/var/lib/postgresql/data \ 
-   -p 5432:5432 postgres -e POSTGRES_PASSWORD=YourPassword
+   -p 5432:5432 -e POSTGRES_PASSWORD=YourPassword postgres
   ```
 
   2. Create a `hubitat` DB in the container:
