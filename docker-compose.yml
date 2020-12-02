@@ -1,0 +1,31 @@
+# Example Docker Compose file.  Adjust ports and volumes to fit your environment.
+
+version: '2'
+
+services:
+  # Hubitat Data Collector Endpoint
+  collector:
+    image: entmike/hubitat-datacollector:latest
+    restart: unless-stopped
+    container_name: collector
+    hostname: collector
+    ports:
+      - 3333:3000
+    environment:
+      - PGHOST=db
+      - PGDATABASE=hubitat
+      - PGPORT=5432
+      - PGUSER=postgres
+      - PGPASSWORD=$DBPASSWORD
+
+  # Backing PostgreSQL DB
+  db:
+    image: postgres
+    restart: unless-stopped
+    container_name: db
+    hostname: db
+    environment:
+      - POSTGRES_PASSWORD=$DBPASSWORD
+    volumes:
+      - /mnt/user/appdata/hubitat-postgres:/var/lib/postgresql/data
+      
